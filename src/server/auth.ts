@@ -35,14 +35,28 @@ declare module "next-auth" {
  */
 export const authOptions: NextAuthOptions = {
   callbacks: {
-    session: ({ session, token }) => ({
-      ...session,
-      user: {
-        ...session.user,
-        id: token.sub,
-      },
-    }),
+    async jwt({ token, account }) {
+      if (account) {
+        token = Object.assign({}, token, {
+          access_token: account.access_token,
+        });
+      }
+      return token;
+    },
+    // async redirect({ url, baseUrl }) {
+    //   return baseUrl + "/user";
+    // },
+    async session({ session, token }) {
+      if (session) {
+        session = Object.assign({}, session, {
+          access_token: token.access_token,
+        });
+        console.log(token);
+      }
+      return session;
+    },
   },
+  // secret: "123123123123",
   providers: [
     GoogleProvider({
       clientId: env.GOOGLE_CLIENT_ID,

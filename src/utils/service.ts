@@ -9,3 +9,9 @@ export async function getProducts() {
   const data = response.json();
   return data;
 }
+
+export async function getProduct(id: any) {
+  const response = await fetch(`http://localhost:5000/product/` + id);
+  const data = response.json();
+  return data;
+}

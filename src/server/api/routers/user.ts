@@ -6,7 +6,7 @@ import {
 import { getUsers } from "~/utils/service";
 
 export const usersRouter = createTRPCRouter({
-  getUsers: protectedProcedure.query(async () => {
+  getUsers: publicProcedure.query(async () => {
     const user = await getUsers();
     return user;
   }),
